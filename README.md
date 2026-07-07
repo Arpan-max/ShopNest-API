@@ -1,80 +1,183 @@
-# ShopNest API
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=3B82F6&height=200&section=header&text=ShopNest%20API&fontSize=50&fontAlignY=35&desc=A%20Highly%20Scalable%20E-Commerce%20Backend&descAlignY=55&descSize=20" alt="Header" />
+</div>
 
-ShopNest API is a complete backend RESTful API designed for e-commerce platforms, providing secure authentication, catalogue management, per-user shopping carts, and transactional order placements.
+<div align="center">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="45" />
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" alt="Express" width="45" />
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="45" />
 
-## Features
-- **Authentication**: JWT-based Bearer token authentication with role-based access control (customer vs admin).
-- **Catalogue**: Categories and Products with advanced SQL-based filtering, searching, sorting, and pagination.
-- **Cart Management**: Add, update, remove items, with real-time stock validation.
-- **Order Processing**: Atomic transaction placing an order from cart, snapshotting prices, decrementing stock, and clearing cart securely.
-- **Robust Error Handling**: Centralized error responses wrapped in a consistent payload.
+  <br/><br/>
 
-## Tech Stack
-- **Node.js + Express.js**
-- **PostgreSQL** (via `pg` node-postgres driver, raw SQL, no ORM)
-- **bcryptjs** for hashing
-- **jsonwebtoken** for auth
-- **express-validator** for payload validation
+  <p>
+    <a href="https://shopnest-api-h4yj.onrender.com"><img src="https://img.shields.io/badge/🔴_Live_Demo-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" /></a>
+    <a href="https://github.com/Arpan-max/ShopNest-API"><img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repo" /></a>
+  </p>
 
-## Folder Structure (Layered Architecture)
+  <p>
+    <strong>A production-ready RESTful API engineered for modern e-commerce platforms.</strong><br/>
+    <i>Built with Node.js, Express, PostgreSQL, and robust JWT authentication.</i>
+  </p>
+</div>
+
+---
+
+## 🌟 Why This Project Stands Out
+
+**ShopNest API** isn't just a tutorial project; it's designed with **production-grade engineering principles** in mind:
+- **Stateless Architecture**: Fully stateless authentication using JWTs, making the API easily horizontally scalable.
+- **Data Integrity**: Enforced via a highly normalized PostgreSQL schema with explicit constraints, foreign keys, and cascading rules.
+- **Security First**: Integrated with `helmet` for HTTP header hardening, `express-rate-limit` to prevent brute-force attacks, and `express-validator` to ensure payload sanitization.
+- **Raw SQL Performance**: Bypassing heavy ORMs by using the `pg` driver to write optimized, native SQL queries.
+
+---
+
+## 🚀 Live Environment
+
+The API is deployed and running live on Render!
+
+- **Base URL**: [`https://shopnest-api-h4yj.onrender.com`](https://shopnest-api-h4yj.onrender.com)
+
+*Note: Since it's deployed on Render's free tier, the first request might take ~50 seconds to wake up the server.*
+
+---
+
+## 🏗️ System Architecture (ERD)
+
+The database schema is heavily normalized to ensure data integrity and zero redundancy.
+
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        string name
+        string email UK
+        string password_hash
+        string role "customer | admin"
+        timestamp created_at
+    }
+    CATEGORIES {
+        int id PK
+        string name UK
+        string slug UK
+    }
+    PRODUCTS {
+        int id PK
+        string name
+        string description
+        numeric price
+        int stock_quantity
+        int category_id FK
+        string image_url
+        timestamp created_at
+    }
+    CART_ITEMS {
+        int id PK
+        int user_id FK
+        int product_id FK
+        int quantity
+    }
+    ORDERS {
+        int id PK
+        int user_id FK
+        string status
+        numeric total_amount
+        string shipping_address
+        timestamp created_at
+    }
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK
+        int product_id FK
+        int quantity
+        numeric price_at_purchase
+    }
+
+    USERS ||--o{ CART_ITEMS : "has"
+    USERS ||--o{ ORDERS : "places"
+    CATEGORIES ||--o{ PRODUCTS : "contains"
+    PRODUCTS ||--o{ CART_ITEMS : "added to"
+    PRODUCTS ||--o{ ORDER_ITEMS : "part of"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
 ```
-shopnest-api/
-├── server.js               (entry point, binds port)
-├── app.js                  (express setup, middleware, routes)
-├── config/                 (db connection pool)
-├── database/               (schema and seed scripts)
-├── middleware/             (auth, validation, error handling)
-├── routes/                 (express routers mapping endpoints to controllers)
-├── controllers/            (parse req, call services, shape res - no business logic)
-├── services/               (business logic, orchestrates repositories, owns transactions)
-├── repositories/           (data access layer, raw SQL queries ONLY)
-└── utils/                  (helpers, custom error classes)
+
+---
+
+## ⚡ Quick Start (Local Development)
+
+Want to run it locally? 
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/Arpan-max/ShopNest-API.git
+cd ShopNest-API
+npm install
 ```
-*Flow*: Routes -> Controllers -> Services -> Repositories.
 
-## Local Setup Instructions
-1. Clone the repository and run `npm install`.
-2. Copy `.env.example` to `.env`.
-3. Provide your `DATABASE_URL` (e.g. from Neon.tech or a local Postgres instance) and `JWT_SECRET`.
-4. Run `npm run db:setup` to construct the database schema.
-5. Run `npm run db:seed` to populate sample categories and products.
-6. Run `npm run dev` to start the server locally with nodemon on port 5000.
-
-## API Documentation
-See [docs/API.md](docs/API.md) for full endpoint references.
-- `POST /api/auth/register`, `/api/auth/login`
-- `GET /api/products` (supports query params: category, search, minPrice, maxPrice, sortBy, page, limit)
-- `POST /api/cart`
-- `POST /api/orders`
-
-## Manual Steps You Must Do Yourself (Deployment)
-
-**A. Create a hosted PostgreSQL database (Neon.tech — free tier)**
-1. Sign up at neon.tech, create a new project.
-2. Copy the connection string shown (it already includes `?sslmode=require`).
-3. Paste it into `DATABASE_URL` in `.env`.
-
-**B. Set up the schema**
-1. Run `npm run db:setup && npm run db:seed` locally once your `.env` is filled in with the Neon database string. (Alternatively, run the raw SQL from the database folder directly in Neon's SQL editor).
-
-**C. Generate a JWT secret**
-Run locally: `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` and paste the output into `JWT_SECRET` in your `.env`.
-
-**D. Create your first admin user**
-There's no UI, so: register a normal account via `POST /api/auth/register` (e.g. in Postman), then manually promote it in the Neon SQL editor:
-```sql
-UPDATE users SET role = 'admin' WHERE email = 'you@example.com';
+### 2. Environment Setup
+Create a `.env` file in the root directory:
+```env
+PORT=5000
+DATABASE_URL=postgres://your_user:your_password@localhost:5432/shopnest
+JWT_SECRET=your_super_secret_jwt_key_here
 ```
-Use this admin account's token to create categories and products via the API before testing cart/checkout.
 
-**E. Push code to GitHub**
-`git init`, `git add .`, `git commit -m "Initial commit"`, create a repo on GitHub, `git remote add origin <repo-url>`, `git push -u origin main`.
+### 3. Database Initialization
+Run the included scripts to construct tables and seed initial data:
+```bash
+npm run db:setup
+npm run db:seed
+```
 
-**F. Deploy to Render.com**
-1. Sign up at render.com → "New +" → "Web Service" → connect your GitHub repo.
-2. Build command: `npm install`. Start command: `npm start`.
-3. Add environment variables: `DATABASE_URL` (your Neon string), `JWT_SECRET`, `JWT_EXPIRES_IN` (e.g. 7d), `NODE_ENV=production`.
-4. Deploy. Render gives you a live URL like `https://shopnest-api.onrender.com`.
+### 4. Ignite the Server
+```bash
+npm run dev
+```
+The server will now be listening on `http://localhost:5000`.
 
-**G. Test the live API**
-Use Postman/Insomnia against the live URL. Test flow: register -> login -> get products -> add to cart -> place order.
+---
+
+## 📚 Core API Routes
+
+### 👤 Authentication
+| Method | Endpoint | Description | Auth Required |
+| --- | --- | --- | --- |
+| `POST` | `/api/auth/register` | Register a new user | No |
+| `POST` | `/api/auth/login` | Authenticate & get token | No |
+| `GET`  | `/api/auth/me` | Fetch active profile | **Yes** |
+
+### 📦 Catalog
+| Method | Endpoint | Description | Auth Required |
+| --- | --- | --- | --- |
+| `GET` | `/api/categories` | Browse product categories | No |
+| `GET` | `/api/products` | Browse all products | No |
+| `POST`| `/api/products` | Add new inventory | **Yes (Admin)** |
+
+### 🛒 Shopping Cart
+| Method | Endpoint | Description | Auth Required |
+| --- | --- | --- | --- |
+| `GET` | `/api/cart` | View active cart | **Yes** |
+| `POST`| `/api/cart` | Add item to cart | **Yes** |
+| `DELETE`| `/api/cart/:id`| Remove an item | **Yes** |
+
+### 💳 Order Management
+| Method | Endpoint | Description | Auth Required |
+| --- | --- | --- | --- |
+| `POST` | `/api/orders` | Checkout current cart | **Yes** |
+| `GET`  | `/api/orders` | View order history | **Yes** |
+
+---
+
+## 🛠️ Tech Stack Spotlight
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white" />
+</p>
+
+---
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=3B82F6&height=100&section=footer" alt="Footer" />
+</div>
