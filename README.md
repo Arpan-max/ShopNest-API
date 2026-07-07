@@ -178,6 +178,12 @@ The server will now be listening on `http://localhost:5000`.
 </p>
 
 ---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=3B82F6&height=100&section=footer" alt="Footer" />
 </div>
