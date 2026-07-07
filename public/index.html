@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopNest API Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body { 
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+        background-color: #0f172a; 
+        margin: 0; 
+        padding: 0; 
+        height: 100vh; 
+        width: 100vw; 
+      } 
+      .mono { 
+        font-family: 'JetBrains Mono', 'Fira Code', monospace; 
+      } 
+      .custom-scroll { 
+        scrollbar-width: thin; 
+        scrollbar-color: #334155 #0f172a; 
+      } 
+      .custom-scroll::-webkit-scrollbar { 
+        width: 6px; 
+      } 
+      .custom-scroll::-webkit-scrollbar-track { 
+        background: #0f172a; 
+      } 
+      .custom-scroll::-webkit-scrollbar-thumb { 
+        background-color: #334155; 
+        border-radius: 20px; 
+      } 
+      .card-border { 
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex h-full w-full overflow-hidden bg-slate-950 text-slate-200">
+      <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">S</div>
+          <h1 class="text-xl font-bold tracking-tight text-white">ShopNest<span class="text-blue-500 underline decoration-2 underline-offset-4">API</span></h1>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Console</div>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 bg-slate-800 text-white rounded-md transition-colors"><span class="w-2 h-2 rounded-full bg-blue-400"></span>Dashboard</a>
+          <a href="/api/products" target="_blank" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">Endpoints</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">Database Explorer</a>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2 mt-6">Management</div>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">Authentication</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">Log Stream</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">Deployment</a>
+        </nav>
+        <div class="p-4 border-t border-slate-800 bg-slate-900/50 text-xs text-slate-500">
+          <div class="flex justify-between mb-1">
+            <span>Node.js v18.17.0</span>
+            <span class="text-emerald-400">Online</span>
+          </div>
+          <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+            <div class="bg-emerald-500 h-full w-[99.9%]"></div>
+          </div>
+        </div>
+      </aside>
+      
+      <main class="flex-1 flex flex-col h-full bg-slate-950">
+        <header class="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-slate-900/20 backdrop-blur-md">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>PRODUCTION LIVE
+            </div>
+            <div class="text-slate-400 text-sm">Instance: <span class="text-slate-200 mono">sn-api-prod-01</span></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="/shopnest-api.zip" download class="text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download Source Code (ZIP)
+            </a>
+            <button class="text-sm text-slate-400 hover:text-white">Documentation</button>
+            <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-600"></div>
+          </div>
+        </header>
+        
+        <div class="flex-1 p-8 grid grid-cols-12 gap-6 overflow-hidden content-start">
+          <div class="col-span-8 space-y-6 overflow-hidden flex flex-col">
+            <div class="grid grid-cols-3 gap-4">
+              <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 card-border">
+                <div class="text-slate-500 text-xs font-semibold uppercase mb-1">Avg Latency</div>
+                <div class="text-2xl font-bold text-white mono">42<span class="text-sm font-normal text-slate-500 ml-1">ms</span></div>
+              </div>
+              <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 card-border">
+                <div class="text-slate-500 text-xs font-semibold uppercase mb-1">Total Products</div>
+                <div class="text-2xl font-bold text-white mono">1,248</div>
+              </div>
+              <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 card-border">
+                <div class="text-slate-500 text-xs font-semibold uppercase mb-1">Active Carts</div>
+                <div class="text-2xl font-bold text-white mono">84</div>
+              </div>
+            </div>
+            
+            <div class="bg-slate-900 flex-1 border border-slate-800 rounded-xl card-border overflow-hidden flex flex-col">
+              <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="font-semibold text-white">API Route Explorer</h3>
+                <span class="text-xs text-slate-500">24 Active Routes</span>
+              </div>
+              <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-3">
+                <div class="flex items-center gap-4 p-3 bg-slate-800/40 rounded-lg border border-slate-700/50 hover:bg-slate-800 transition-all">
+                  <span class="w-12 text-center text-[10px] font-bold py-1 bg-blue-500/20 text-blue-400 rounded border border-blue-500/30 uppercase">GET</span>
+                  <span class="flex-1 mono text-sm text-slate-300">/api/products</span>
+                  <span class="text-xs text-slate-500">Product Catalog</span>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-slate-800/40 rounded-lg border border-slate-700/50 hover:bg-slate-800 transition-all">
+                  <span class="w-12 text-center text-[10px] font-bold py-1 bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/30 uppercase">POST</span>
+                  <span class="flex-1 mono text-sm text-slate-300">/api/orders</span>
+                  <span class="text-xs text-slate-500">Checkout Transact</span>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-slate-800/40 rounded-lg border border-slate-700/50 hover:bg-slate-800 transition-all">
+                  <span class="w-12 text-center text-[10px] font-bold py-1 bg-orange-500/20 text-orange-400 rounded border border-orange-500/30 uppercase">PUT</span>
+                  <span class="flex-1 mono text-sm text-slate-300">/api/cart/:itemId</span>
+                  <span class="text-xs text-slate-500">Update Quantity</span>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-slate-800/40 rounded-lg border border-slate-700/50 hover:bg-slate-800 transition-all">
+                  <span class="w-12 text-center text-[10px] font-bold py-1 bg-rose-500/20 text-rose-400 rounded border border-rose-500/30 uppercase">DELETE</span>
+                  <span class="flex-1 mono text-sm text-slate-300">/api/auth/logout</span>
+                  <span class="text-xs text-slate-500">End Session</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-span-4 flex flex-col gap-6">
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 card-border flex-1">
+              <h3 class="font-semibold text-white mb-4">Database Health</h3>
+              <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-slate-400">Pool Connections</span>
+                  <span class="text-sm text-white mono font-bold">8/20</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full">
+                  <div class="bg-blue-500 h-full w-[40%] rounded-full"></div>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-slate-400">Storage Used</span>
+                  <span class="text-sm text-white mono font-bold">1.2 GB</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full">
+                  <div class="bg-slate-600 h-full w-[12%] rounded-full"></div>
+                </div>
+                <div class="mt-6 p-3 bg-slate-950 rounded border border-slate-800">
+                  <div class="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Recent DB Transaction</div>
+                  <div class="text-xs text-emerald-400 mono">COMMIT: Order #4829 completed successfully (5 items).</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 card-border h-48">
+              <h3 class="font-semibold text-white mb-3">Real-time Logs</h3>
+              <div class="mono text-[10px] space-y-1 opacity-60 leading-tight">
+                <div class="text-slate-400">[14:22:01] <span class="text-blue-400">GET</span> /api/products?page=1&limit=10 200 (45ms)</div>
+                <div class="text-slate-400">[14:22:04] <span class="text-emerald-400">POST</span> /api/auth/login 200 (112ms)</div>
+                <div class="text-slate-400">[14:22:07] <span class="text-orange-400">PATCH</span> /api/orders/491 204 (22ms)</div>
+                <div class="text-rose-400">[14:22:15] <span class="text-rose-400">POST</span> /api/orders 409 Conflict (Stock Level)</div>
+                <div class="text-slate-400">[14:22:18] <span class="text-blue-400">GET</span> /api/cart 200 (12ms)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
