@@ -22,9 +22,8 @@
 
 ---
 
-## 🌟 Why This Project Stands Out
+## 🌟 About This Project
 
-**ShopNest API** isn't just a tutorial project; it's designed with **production-grade engineering principles** in mind:
 - **Stateless Architecture**: Fully stateless authentication using JWTs, making the API easily horizontally scalable.
 - **Data Integrity**: Enforced via a highly normalized PostgreSQL schema with explicit constraints, foreign keys, and cascading rules.
 - **Security First**: Integrated with `helmet` for HTTP header hardening, `express-rate-limit` to prevent brute-force attacks, and `express-validator` to ensure payload sanitization.
